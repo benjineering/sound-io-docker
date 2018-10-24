@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  machine:
+    build:
+      context: .
+      args:
+        - watch=true
+    volumes:
+      - ../sound-io:/sound-io
