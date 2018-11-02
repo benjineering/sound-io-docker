@@ -19,7 +19,7 @@ RUN make
 RUN make install
 
 VOLUME "/sound-io"
-COPY cmd.sh /root
+COPY entrypoint.sh /root
 WORKDIR /root
 
-ENTRYPOINT /bin/bash -c "/root/cmd.sh"
+ENTRYPOINT /bin/bash -c "/root/entrypoint.sh"
