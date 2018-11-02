@@ -1,26 +1,34 @@
 #! /bin/bash
 
-# settings
+# settings - hack away
+################################################################################
 GEM_DIR="../sound-io"
 IMG_NAME="soundio_debian"
-IMG_TAG="${IMG_NAME}:latest"
+IMG_TAG="latest"
 ################################################################################
+
+if [[ $1 == "watch" ]] || [[ $1 == "debug" ]]; then
+  ACTION=$1
+else
+  cat << USAGE
+  usage: ./run.sh (watch||debug)
+    watch: runs the ENTRYPOINT in the Dockerfile
+    debug: runs bash
+
+USAGE
+  exit 1
+fi
 
 ABS_GEM_DIR=$(cd ${GEM_DIR}; pwd)
 
-sio_build_image() {
-  docker build -t ${IMG_TAG} --rm .
-}
+# docker run == create a container and run.
+# Fantastic product. Nightmare of a CLI.
+DOCKER_RUN="docker run --rm -it -v ${ABS_GEM_DIR}:/sound-io"
 
-# no need for docker create - run creates the container (?!?!!)
-sio_watch() {
-  docker run --rm -it -v ${ABS_GEM_DIR}:/sound-io ${IMG_NAME}
-}
+docker build -t ${IMG_NAME}:${IMG_TAG} --rm .
 
-sio_bash() {
-  docker run --rm -it -v ${ABS_GEM_DIR}:/sound-io ${IMG_NAME} #&& \
-  #docker exec -it ${IMG_NAME} bash
-}
-
-sio_build_image
-sio_watch
+if [[ ${ACTION} == "watch" ]]; then
+  ${DOCKER_RUN} ${IMG_NAME}
+elif [[ ${ACTION} == "debug" ]]; then
+  ${DOCKER_RUN} --entrypoint /bin/bash ${IMG_NAME}
+fi

@@ -1,10 +1,6 @@
 FROM ruby:2.5
 
-# TODO: handle watch
-ARG watch
-ENV MY_RUBY_HOME /usr/local
-
-RUN echo "force_color_prompt=yes" >> /root/.bashrc
+#RUN echo "force_color_prompt=yes" >> /root/.bashrc
 RUN apt-get update && apt-get install -y \
 cmake \
 pulseaudio \
@@ -18,8 +14,11 @@ RUN cmake ..
 RUN make
 RUN make install
 
-VOLUME "/sound-io"
-COPY entrypoint.sh /root
-WORKDIR /root
+ARG GEM_DIR=/sound-io
+ENV MY_RUBY_HOME /usr/local
 
-ENTRYPOINT /bin/bash -c "/root/entrypoint.sh"
+VOLUME ${GEM_DIR}
+COPY entrypoint.sh /root
+
+WORKDIR ${GEM_DIR}
+ENTRYPOINT /bin/bash -c /root/entrypoint.sh ${ACTION}
