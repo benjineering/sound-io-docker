@@ -1,6 +1,8 @@
 #! /bin/bash
 
-# settings - hack away
+# A script to build docker
+
+# settings
 ################################################################################
 GEM_DIR="../sound-io"
 IMG_NAME="soundio_debian"
@@ -22,7 +24,6 @@ fi
 ABS_GEM_DIR=$(cd ${GEM_DIR}; pwd)
 
 # docker run == create a container and run.
-# Fantastic product. Nightmare of a CLI.
 DOCKER_RUN="docker run --rm -it -v ${ABS_GEM_DIR}:/sound-io"
 
 docker build -t ${IMG_NAME}:${IMG_TAG} --rm .

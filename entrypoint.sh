@@ -1,10 +1,6 @@
 #! /bin/bash
 
-cd /sound-io
-bundle install
-
-rake compile
-rake compile:examples
+/root/install.sh
 
 bundle exec rspec
-bundle exec guard # TODO: only watch if ARG is true
+bundle exec guard
