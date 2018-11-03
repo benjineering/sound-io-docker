@@ -12,6 +12,7 @@ WORKDIR /root/libsoundio/build
 RUN cmake ..
 RUN make
 RUN make install
+RUN ldconfig
 
 ARG GEM_DIR=/sound-io
 ENV MY_RUBY_HOME /usr/local
